@@ -1,0 +1,73 @@
+Eis uma checklist profunda e prática para resolver isso:
+✅ 1. Confirma se a imagem nova carrega diretamente no browser
+Abre a URL da nova imagem diretamente numa nova aba do browser. A imagem tem de:
+
+Ser uma PNG válida
+
+Estar acessível publicamente (sem autenticação)
+
+Ter um HTTPS seguro
+
+Não estar bloqueada por CORS (podes ver isso na consola do browser)
+
+✅ 2. Verifica se estás realmente a salvar o URL no local correto
+Por exemplo:
+
+js
+Copiar
+Editar
+eventData.logoHome = "https://example.com/image.png"
+Assegura-te de que esse valor está a ser usado no render da página principal. Às vezes adicionas o dado, mas esqueces-te de o mostrar ou atualizá-lo no state.
+
+✅ 3. Verifica a função de renderização
+No teu HTML/JSX (React?) estás a fazer algo como:
+
+jsx
+Copiar
+Editar
+<img src={eventData.logoHome} alt="Logo" />
+Ou se estiveres a usar vanilla JS:
+
+js
+Copiar
+Editar
+document.getElementById("logo").src = eventData.logoHome;
+Verifica:
+
+Se o src está realmente a receber o novo URL
+
+Se não há erro de undefined ou null
+
+Se o componente ou elemento está a ser re-renderizado (React ou DOM)
+
+✅ 4. Limpa o cache do navegador
+Às vezes os browsers cacheiam imagens com erro e deixam de tentar mostrar de novo. Força um hard refresh:
+
+Ctrl + F5 ou Cmd + Shift + R
+
+✅ 5. Abre a consola de erros do browser (F12 > Console)
+Se a imagem falhar, irás ver "Failed to load image" ou erro de CORS. Isso é importantíssimo! Dá-te logo o motivo.
+
+✅ 6. Verifica se estás a atualizar o estado corretamente (se React/Vue/etc.)
+Se usas React, tem atenção a isto:
+
+jsx
+Copiar
+Editar
+setEventData({ ...eventData, logoHome: newUrl })
+Se fizeres algo como eventData.logoHome = newUrl, React pode não detetar a mudança e não atualizar o DOM.
+
+✅ 7. Exemplo mínimo funcional
+Aqui vai um exemplo que funciona com img:
+
+html
+Copiar
+Editar
+<img id="logoHome" width="100" />
+
+<script>
+  const logoURL = "https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg";
+  document.getElementById("logoHome").src = logoURL;
+</script>
+Testa este código isoladamente no teu Replit e vê se a imagem aparece. Se sim, o problema está na lógica de atualização do teu app e não na imagem.
+
